@@ -9,7 +9,7 @@ repository = "https://github.com/FintelmannLabDevelopmentTeam/pygmh-mrb/"
 [tool.poetry.dependencies]
 pygmh = { git = "https://github.com/FintelmannLabDevelopmentTeam/pygmh.git", branch = "master" }
 pynrrd = "^0.4.2"
-python = "^3.7"
+python = "^3.6"
 numpy = "^1.18"
 
 [tool.poetry.dev-dependencies]
