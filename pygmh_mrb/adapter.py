@@ -142,7 +142,7 @@ class Adapter(IAdapter):
         nrrd_data = np.flip(nrrd_data, 1)
 
         image = Image(
-            nrrd_data,
+            image_data=nrrd_data,
             identifier=self._derive_identifier(volume_node.attrib["name"]),
             voxel_spacing=self._get_voxel_spacing(nrrd_header["space directions"])
         )
@@ -213,7 +213,7 @@ class Adapter(IAdapter):
             header_prefix = "Segment{}_".format(segment_index)
 
             identifier = self._derive_identifier(nrrd_header[header_prefix + "Name"])
-            if image.has_segmentation(identifier):
+            if image.has_segment(identifier):
                 identifier = self._handle_segmentation_identifier_collision(image, identifier)
 
             color = tuple([
@@ -224,10 +224,10 @@ class Adapter(IAdapter):
             assert len(color) == 3, "Invalid segment color: " + nrrd_header[header_prefix + "Color"]
             color = cast(Color, color)
 
-            image.add_segmentation(identifier, mask, color)
+            image.add_segment(identifier, mask, color)
 
         assert [np.sum(segmentations_volume[x]) for x in range(segmentations_volume.shape[0])] ==\
-               [np.sum(seg.get_mask()) for seg in image.get_ordered_segmentations()],\
+               [np.sum(seg.get_mask()) for seg in image.get_ordered_segments()],\
             "Error during reconstruction of segmentation masks!"
 
     def _handle_segmentation_identifier_collision(self, image: Image, identifier: str) -> str:
@@ -238,7 +238,7 @@ class Adapter(IAdapter):
 
             candidate_identifier = "{}_{}".format(identifier, suffix)
 
-            if not image.has_segmentation(candidate_identifier):
+            if not image.has_segment(candidate_identifier):
                 return candidate_identifier
 
             suffix += 1

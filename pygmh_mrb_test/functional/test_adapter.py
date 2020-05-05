@@ -20,7 +20,7 @@ def test_read():
 
     for identifier in ["lymph node", "Segment_1"]:
 
-        segmentation = image.get_segmentation(identifier)
+        segmentation = image.get_segment(identifier)
 
         assert np.array_equal(
             segmentation.get_mask()[60:70],
